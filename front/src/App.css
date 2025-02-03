@@ -1,0 +1,27 @@
+@import url('https://fonts.cdnfonts.com/css/freaky');
+*{
+  font-family: Copperplate, Papyrus, fantasy;
+
+}
+body, html {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden; /* Prevents scrollbars */
+  background-color: #f0f0f0; /* Light gray base */
+  background-image: radial-gradient(circle, #d6d6d6 2px, transparent 20px);
+  background-size: 20px 20px; /* Controls the pattern spacing */
+}
+
+.container {
+  display: flex;
+  justify-self: center;
+  margin: 20px;
+  width: 97vw;
+  height: 95vh;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 1);
+}

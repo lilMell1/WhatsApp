@@ -1,0 +1,79 @@
+.group-item {
+  border: 2px solid orange;
+  position: relative; 
+  background-color: gray;
+  cursor: pointer;
+  width: 95%;
+  height: 200px;
+  margin-top: 5px;
+}
+
+/* ✅ Create top border with 80% width */
+.group-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  background-color: burlywood;
+}
+
+.group-item::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+}
+
+.group-item:hover {
+  background-color: lightcyan;
+}
+
+.group-info {
+  display: flex;
+  word-break: break-word;
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* ✅ Media Query: Make .group-info a column layout at 700px */
+@media (max-width: 1200px) {
+  .group-info {
+    flex-direction: column;
+    align-items: flex-start; /* ✅ Align items to start */
+  }
+
+  .group-name {
+    max-width: 100%; /* ✅ Make name take full width */
+  }
+
+  .group-date {
+    text-align: left; /* ✅ Ensure date aligns left when stacked */
+  }
+}
+
+.group-name {
+  border: 2px solid green;
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+  max-width: 80%;
+  margin: 0;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  text-align: left;
+}
+
+.group-description {
+  color: black;
+  font-size: 14px;
+}
+
+.group-date {
+  border: 2px solid black;
+  color: black;
+  font-size: medium;
+  width: auto;
+  text-align: right;
+}

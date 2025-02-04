@@ -1,28 +1,32 @@
-.groups-container{
-    border: 2px solid green;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    flex-direction: column;
-    flex:1;
+.groups-container {
+  border: 2px solid green;
+  display: flex;
+  flex-direction: column;
+  background-color: darkgray;
+  height: 100%;
+  min-width: 40%;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 .float-left{
   display: flex;
-  float: right;
+  align-items: center;
   gap: 15px;
   margin-right: 10px;
 }
+
 .btn-add-group{
     height: 40px;
-    width: 100px;
-
+    width: 80px;
+  
 }
-
 
 .groups-container-header{
     display: flex;
-    border: 2px solid black;
+    border-bottom: 2px solid black;
+    margin-bottom: 2px;
     height: 90px;
     justify-content: space-between;
     width: 100%;
@@ -44,6 +48,7 @@ strong{
     cursor: pointer;
     transition: all 0.3s ease-in-out;
   }
+
 
 
   /* From Uiverse.io by vinodjangid07 */ 
@@ -79,6 +84,15 @@ strong{
     animation: bellRing 0.9s both;
   }
   
+  .groups-div{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
   /* bell ringing animation keyframes*/
   @keyframes bellRing {
     0%,
@@ -113,7 +127,7 @@ strong{
     transform: scale(1.05);
   }
 
-  @media(max-width:600px) {
+  @media(max-width:800px) {
     .float-left{
       flex-direction: column;
       align-items: center;
@@ -124,6 +138,8 @@ strong{
       height: auto;
       padding-top: 5px;
       padding-bottom: 5px;
-
-  }
+    }
+    .float-left{
+      margin-left: 15px;
+    }
   }

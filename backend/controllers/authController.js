@@ -48,7 +48,12 @@ exports.login = async (req, res) => {
   }
 };
 
+exports.getUser = (req,res) => {
+  res.json({ userId: req.user.id });
+};
+
 exports.logout = (req, res) => {
   res.clearCookie('token');
   res.json({ message: 'Logged out successfully' });
 };
+

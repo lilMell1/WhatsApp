@@ -14,7 +14,7 @@ const Login = () => {
   });
 
   useEffect(() => {
-    // ✅ Reset form data when isRegister changes
+    // reset form data when isRegister changes
     setFormData({
       username: '',
       password: '',
@@ -93,7 +93,7 @@ const Login = () => {
               />
             </>
           )}
-          <button type="submit">{isRegister ? 'Register' : 'Login'}</button>
+          <button className='btn-submit' type="submit">{isRegister ? 'Register' : 'Login'}</button>
         </form>
         <p 
           onClick={() => setIsRegister(prev => !prev)}

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import '../css/groupModal.css'
+import '../css/newGroupModal.css'
 
 const GroupModal = ({ isOpen, onClose, onCreate }) => {
   const [groupName, setGroupName] = useState('');
   const [groupDescription, setGroupDescription] = useState('');
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // ✅ Prevent default form submission behavior
+    e.preventDefault(); 
 
     if (!groupName.trim()) {
       alert('Group name is required.');
@@ -24,18 +24,18 @@ const GroupModal = ({ isOpen, onClose, onCreate }) => {
     const newGroup = {
       name: groupName,
       description: groupDescription,
-      createDate: new Date().toISOString(), // ✅ Automatically add createDate
+      createDate: new Date().toISOString(), 
     };
 
-    onCreate(newGroup); // ✅ Send data to `Groups.jsx`
-    onClose(); // ✅ Close the modal
+    onCreate(newGroup); //  send data to Groups.jsx
+    onClose(); // close the modal
   };
 
-  if (!isOpen) return null; // ✅ Hide modal when `isOpen` is false
+  if (!isOpen) return null; 
 
   return (
-    <div className="modal-overlay" onClick={onClose}> {/* ✅ Close when clicking outside */}
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}> {/* ✅ Prevent closing when clicking inside */}
+    <div className="addGroup-modal-overlay" onClick={onClose}> {/* close when clicking outside */}
+      <div className="addGroup-modal-content" onClick={(e) => e.stopPropagation()}> {/* prevent closing when clicking inside */}
         <h2>Create New Group</h2>
         <form onSubmit={handleSubmit}>
           <input
@@ -50,8 +50,8 @@ const GroupModal = ({ isOpen, onClose, onCreate }) => {
             value={groupDescription}
             onChange={(e) => setGroupDescription(e.target.value)}
           />
-          <button type="submit" className='create-btn'>Create</button>
-          <button type="button" className="close-btn" onClick={onClose}>Cancel</button>
+          <button type="submit" className='addGroup-create-btn'>Create</button>
+          <button type="button" className="addGroup-close-btn" onClick={onClose}>Cancel</button>
         </form>
       </div>
     </div>

@@ -38,7 +38,7 @@
     font-size: 16px;
   }
   
-  button {
+  .btn-submit {
     background-color: #007bff;
     color: white;
     padding: 10px;
@@ -48,7 +48,7 @@
     font-size: 16px;
   }
   
-  button:hover {
+  .btn-submit:hover {
     background-color: #0056b3;
   }
   

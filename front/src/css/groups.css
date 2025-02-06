@@ -76,7 +76,6 @@ strong{
   }
   
   .btn-bell:hover {
-    background-color: rgb(56, 56, 56);
     background-color: #4CAF50;
   }
   
@@ -84,6 +83,20 @@ strong{
     animation: bellRing 0.9s both;
   }
   
+  .btn-add-friend {
+    background: url('../../public/add-friend-24.png');
+    background-size: cover;
+    color: white;
+    width: 50px;  
+    height: 50px; 
+    border: none;
+    border-radius: 30px;
+    border: 2px solid black;
+    cursor: pointer;
+    text-indent: -1000px;
+    overflow: hidden;
+}
+
   .groups-div{
     display: flex;
     flex-direction: column;
@@ -93,7 +106,7 @@ strong{
     overflow-y: auto;
     overflow-x: hidden;
   }
-  /* bell ringing animation keyframes*/
+
   @keyframes bellRing {
     0%,
     100% {
@@ -123,7 +136,7 @@ strong{
   
   
   .btn-add-group:hover {
-    background-color: #45a049; /* Darker green */
+    background-color: #45a049;
     transform: scale(1.05);
   }
 

@@ -18,7 +18,7 @@ function App() {
           setUserId(response.data.userId);
         })
         .catch((error) => {
-          console.error('❌ Error fetching user:', error);
+          console.error(' Error fetching user:', error);
         });
     }
   }, []);

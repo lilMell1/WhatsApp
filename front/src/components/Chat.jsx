@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Message from './Message';
+import GroupOptionsModal from '../modals/GroupOptionsModal';
 import '../css/chat.css';
 
 const Chat = ({ groupId, groupName, groupDescription, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [isOptionsOpen, setIsOptionsOpen] = useState(false); // manage options modal state
 
   useEffect(() => {
     if (!groupId) return;
@@ -41,14 +43,8 @@ const Chat = ({ groupId, groupName, groupDescription, onClose }) => {
           <p className="chat-description">{groupDescription}</p>
         </div>
         <div className="chat-header-options">
-          <button className="btn-option">Options</button>
-          <div className="chat-options-menu">
-            <p>{groupDescription}</p>
-            <button className="btn-delete">Delete Group</button>
-            <button className="btn-add-user">Add User</button>
-          </div>
+          <button className="btn-option" onClick={() => setIsOptionsOpen(true)}>Options</button>
           <button className="chat-close-btn" onClick={onClose}>X</button>
-
         </div>
       </div>
 
@@ -72,6 +68,15 @@ const Chat = ({ groupId, groupName, groupDescription, onClose }) => {
         />
         <button onClick={sendMessage}>Send</button>
       </div>
+
+      {/* ✅ Group Options Modal */}
+      {isOptionsOpen && (
+        <GroupOptionsModal
+          groupId={groupId}
+          groupName={groupName}
+          onClose={() => setIsOptionsOpen(false)}
+        />
+      )}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css/newGroupModal.css'
 
-const GroupModal = ({ isOpen, onClose, onCreate }) => {
+const NewGroupModal = ({ isOpen, onClose, onCreate }) => {
   const [groupName, setGroupName] = useState('');
   const [groupDescription, setGroupDescription] = useState('');
 
@@ -58,4 +58,4 @@ const GroupModal = ({ isOpen, onClose, onCreate }) => {
   );
 };
 
-export default GroupModal;
+export default NewGroupModal;

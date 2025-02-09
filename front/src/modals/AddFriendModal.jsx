@@ -10,11 +10,12 @@ const AddFriendModal = ({ isOpen, onClose, userId }) => {
   // Fetch user's friends
   useEffect(() => {
     if (!userId || !isOpen) return;
-
-    axios.get(`http://localhost:3001/api/users/${userId}/friends`, { withCredentials: true })
+  
+    axios.get(`http://localhost:3001/api/users/friends`, { withCredentials: true }) // ✅ Change to POST
       .then((response) => setFriends(response.data))
       .catch((error) => console.error('Error fetching friends:', error));
   }, [userId, isOpen]);
+  
 
   const handleAddFriend = () => {
     if (!phoneNumber.trim()) {

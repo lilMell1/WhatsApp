@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Group from './Group';
-import GroupModal from '../modals/NewGroupModal';
+import NewGroupModal from '../modals/NewGroupModal';
 import AddFriendModal from '../modals/AddFriendModal';
 import BellModal from '../modals/BellModal';
 import '../css/groups.css';
 import '../css/group.css';
 
-
 const Groups = ({ userId, onSelectGroup }) => {
   const [groups, setGroups] = useState([]);
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
-  const [isFriendModalOpen, setIsFriendModalOpen] = useState(false); // ✅ Track AddFriendModal state
+  const [isFriendModalOpen, setIsFriendModalOpen] = useState(false);
   const [isBellModalOpen, setIsBellModalOpen] = useState(false);
-  useEffect(() => {
-    if (!userId) return;
 
+  // ✅ Fetch Groups
+  const fetchGroups = () => {
+    if (!userId) return;
     axios.get('http://localhost:3001/api/groups/my-groups', { withCredentials: true })
-      .then((response) => {
-        setGroups(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching groups:', error);
-      });
+      .then((response) => setGroups(response.data))
+      .catch((error) => console.error('Error fetching groups:', error));
+  };
+
+  useEffect(() => {
+    fetchGroups();
   }, [userId]);
 
+  // ✅ Create Group & Refresh List
   const createGroup = (newGroup) => {
     if (!userId) {
       alert('User not authenticated');
@@ -32,12 +33,19 @@ const Groups = ({ userId, onSelectGroup }) => {
     }
 
     axios.post('http://localhost:3001/api/groups/create', newGroup, { withCredentials: true })
-      .then((response) => {
-        setGroups([...groups, response.data]); 
+      .then(() => {
+        fetchGroups(); // Refresh groups after creating a new one
       })
-      .catch((error) => {
-        console.error('Error creating group:', error);
-      });
+      .catch((error) => console.error('Error creating group:', error));
+  };
+
+  // ✅ Delete Group & Refresh List
+  const deleteGroup = (groupId) => {
+    axios.delete(`http://localhost:3001/api/groups/${groupId}`, { withCredentials: true })
+      .then(() => {
+        fetchGroups(); // Refresh groups after deletion
+      })
+      .catch((error) => console.error('Error deleting group:', error));
   };
 
   return (
@@ -61,20 +69,19 @@ const Groups = ({ userId, onSelectGroup }) => {
               name={group.name} 
               description={group.description} 
               date={group.createDate} 
-              onOpenChat={() => onSelectGroup(group)} 
+              onOpenChat={() => onSelectGroup(group)}
+              onDelete={() => deleteGroup(group._id)}
             />
           ))
         )}
       </div>
 
-      {/* group Modal */}
-      <GroupModal 
+      <NewGroupModal 
         isOpen={isGroupModalOpen} 
         onClose={() => setIsGroupModalOpen(false)} 
         onCreate={createGroup} 
       />
 
-      {/* add Friend Modal */}
       <AddFriendModal 
         isOpen={isFriendModalOpen} 
         onClose={() => setIsFriendModalOpen(false)} 

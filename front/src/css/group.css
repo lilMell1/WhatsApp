@@ -1,41 +1,49 @@
 .group-item {
-  border: 2px solid orange;
-  position: relative; 
   background-color: gray;
   cursor: pointer;
   width: 95%;
-  height: 100px;
+  height: fit-content;
   margin-top: 5px;
+  border: none;
+  position: relative; /* Needed for pseudo-elements */
+  padding: 10px;
+  border-radius: 10px;
 }
 
+/* ✅ Top Border with Fade */
 .group-item::before {
   content: "";
   position: absolute;
   top: 0;
-  left: 10%;
-  width: 80%;
-  background-color: burlywood;
+  left: 0;
+  width: 100%;
+  height: 3px; /* Thickness of the border */
+  background: linear-gradient(to right, transparent, white 50%, transparent);
 }
 
+/* ✅ Bottom Border with Fade */
 .group-item::after {
   content: "";
   position: absolute;
   bottom: 0;
-  left: 10%;
-  width: 80%;
+  left: 0;
+  width: 100%;
+  height: 3px; /* Thickness of the border */
+  background: linear-gradient(to right, transparent, white 50%, transparent);
 }
 
+/* ✅ Hover Effect */
 .group-item:hover {
   background-color: lightcyan;
 }
 
+/* ✅ Group Info Styling */
 .group-info {
   display: flex;
   word-break: break-word;
   width: 100%;
   justify-content: space-between;
 }
-
 
 @media (max-width: 1200px) {
   .group-info {
@@ -53,7 +61,6 @@
 }
 
 .group-name {
-  border: 2px solid green;
   color: black;
   font-size: 18px;
   font-weight: bold;
@@ -70,7 +77,6 @@
 }
 
 .group-date {
-  border: 2px solid black;
   color: black;
   font-size: medium;
   width: auto;

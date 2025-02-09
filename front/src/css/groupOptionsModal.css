@@ -1,71 +1,108 @@
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  }
-  
-  .btn-delete-group {
-    background: red;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    margin-bottom: 10px;
-    width: 100%;
-  }
-  
-  .btn-add-user {
-    background: green;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    margin-bottom: 10px;
-    width: 100%;
-  }
-  
-  .group-members-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .group-members-list li {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .btn-kick {
-    background: orange;
-    color: white;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-  }
-  
-  .close-btn {
-    background: gray;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 10px;
-  }
-  
+.groupOptions-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.groupOptions-modal-content {
+  position: fixed;
+  top: 50px;  
+  left: calc(50% - 200px); 
+  width: 400px;
+  height: 450px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+}
+
+.groupOptions-btn-leave-group {
+  background: red;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
+}
+
+
+.groupOptions-invite-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.groupOptions-invite-container select {
+  flex-grow: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.groupOptions-btn-send-invite {
+  background: green;
+  color: white;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* ✅ Members List (Fixed Height + Scrollable) */
+.groupOptions-group-members {
+  margin-top: 15px;
+  width: 100%;
+  height: 350px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+/* ✅ Member List Styling */
+.groupOptions-group-members-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.groupOptions-group-members-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* ✅ Kick Button */
+.groupOptions-btn-kick {
+  background: orange;
+  color: white;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* ✅ Close Button (Always at Bottom) */
+.groupOptions-close-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: gray;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  width: 90%;
+  border-radius: 5px;
+}

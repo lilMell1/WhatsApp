@@ -1,12 +1,16 @@
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
+  username: { type: String, required: true },
   password: { type: String, required: true },
-  phoneNumber: { type: String, required: true, unique: true },
+  phoneNumber: { type: String, unique: true, required: true },
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   groups: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }],
-  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], 
-  friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // ✅ Store friend requests
-}, { timestamps: true });
+  groupInvites: [{
+    groupId: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' }, 
+    invitedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } 
+  }]
+});
 
 module.exports = mongoose.model('User', UserSchema);

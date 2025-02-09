@@ -1,149 +1,126 @@
 /* ✅ Full Chat Container */
 .chat-container {
-    border: 2px solid red;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    background: #f4f4f4;
-    height: auto;
-    border-bottom-right-radius: 5px;
-    border-top-right-radius: 7px;
-
-  }
-  
-  .chat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    background: #007bff;
-    color: black;
-    border-bottom: 2px solid black;
-    border-top-right-radius: 5px;
-  }
-  
-  .chat-header-info h2 {
-    border: 2px solid black;
-    width: 40vw;
-    margin: 10px;
-    font-size: 30px;
-    word-wrap: break-word;   
-    overflow-wrap: break-word; 
-    white-space: normal; 
-  }
-  
-  .chat-description {
-    border: 2px solid;
-    font-size: 14px;
-    opacity: 0.8;
-    width: 40vw;
-    margin-left: 10px;
-    flex-wrap: wrap;
-    word-wrap: break-word;   
-    overflow-wrap: break-word; 
-    white-space: normal; 
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  background: #f0f0f0;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
 
-  
-  .chat-header-options {
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    gap: 20px;
-  }
-  
-  .btn-option {
-    background: white;
-    color: black;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .chat-options-menu {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 100%;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    min-width: 150px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
+/* ✅ Chat Header (Top Bar) */
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #075e54;
+  color: white;
+  padding: 15px;
+  border-top-right-radius: 10px;
+}
 
-  
-  .btn-delete {
-    background: red;
-    color: white;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    width: 100%;
-    margin-bottom: 5px;
-  }
-  
-  .btn-add-user {
-    background: green;
-    color: white;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  .chat-messages {
-    border: 2px solid purple;
-    flex-grow: 1;
-    padding: 15px;
-    border-top-right-radius: 5px;
-    overflow-y: auto;
-  }
-  
-  .chat-message {
-    background: lightgray;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    max-width: 80%;
-  }
-  
-  .message-time {
-    font-size: 12px;
-    color: #555;
-  }
-  
-  .chat-input {
-    display: flex;
-    padding: 10px;
-    border-top: 1px solid #ccc;
-  }
-  
-  .chat-input input {
-    flex-grow: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .chat-input button {
-    background: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    margin-left: 5px;
-    border-radius: 5px;
-  }
-  
-  .select-chat-message {
-    display: flex;
-    font-size: 40px;
-    color: #555;
-    text-align: center;
-    height: 100%;
-    background: #f4f4f4;
-  }
-  
+.chat-header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header-info h2 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.chat-description {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* ✅ Chat Header Options */
+.chat-header-options {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* ✅ Stylish Option Button */
+.btn-option {
+  background: transparent;
+  color: white;
+  font-size: 24px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.btn-option:hover {
+  transform: scale(1.2);
+  color: #c7ecee;
+}
+
+/* ✅ Stylish Close Button */
+.chat-close-btn {
+  background: transparent;
+  color: white;
+  font-size: 18px;
+  padding: 6px 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+  border-radius: 5px;
+}
+
+.chat-close-btn:hover {
+  background: rgba(255, 0, 0, 0.7);
+}
+
+/* ✅ Chat Messages Area */
+.chat-messages {
+  flex-grow: 1;
+  padding: 15px;
+  background: #e5ddd5;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ✅ Message Input Section */
+.chat-input {
+  display: flex;
+  padding: 10px;
+  background: white;
+  border-top: 1px solid #ddd;
+  align-items: center;
+}
+
+/* ✅ Input Field */
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.chat-input input:focus {
+  border-color: #128c7e;
+}
+
+/* ✅ Send Button */
+.chat-input button {
+  background-color: #128c7e;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50%;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-size: 14px;
+}
+
+.chat-input button:hover {
+  background-color: #0e7568;
+}

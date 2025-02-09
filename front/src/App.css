@@ -30,12 +30,13 @@ body, html {
 }
 
 .select-chat-message {
-  border: 2px solid green;
+  /* border: 2px solid green; */
   display:flex;
   flex-direction: column;
   border-top-right-radius: 5px;
   background-color: darkgray;
   width: auto;
-  height: auto;
-
+  height: 100%;
+  text-align: center;
+  font-size: 40px;
 }

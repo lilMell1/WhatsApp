@@ -1,4 +1,3 @@
-/* ✅ Full Chat Container */
 .chat-container {
   display: flex;
   flex-direction: column;
@@ -9,7 +8,6 @@
   overflow: hidden;
 }
 
-/* ✅ Chat Header (Top Bar) */
 .chat-header {
   display: flex;
   justify-content: space-between;

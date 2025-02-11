@@ -24,15 +24,21 @@ const Chat = ({ groupId, groupName, groupDescription, onClose, userId }) => {
   useEffect(() => {
     if (!groupId) return;
 
-    // Fetch previous messages
+    // ✅ Fetch previous messages with sender populated
     axios.get(`http://localhost:3001/api/messages/${groupId}/messages`, { withCredentials: true })
-      .then((response) => setMessages(response.data))
+      .then((response) => {
+        console.log("📩 Messages fetched:", response.data);
+        setMessages(response.data);
+      })
       .catch((error) => console.error('Error fetching messages:', error));
 
-    // Listen for incoming messages via Socket.io
+    // ✅ Join Group Socket Room
     socket.emit('joinGroup', groupId);
+
+    // ✅ Listen for incoming messages
     socket.on('receiveMessage', (newMsg) => {
-      setMessages(prevMessages => [...prevMessages, newMsg]);
+      console.log("📥 New message received:", newMsg);
+      setMessages((prevMessages) => [...prevMessages, newMsg]);
     });
 
     return () => {
@@ -41,21 +47,30 @@ const Chat = ({ groupId, groupName, groupDescription, onClose, userId }) => {
     };
   }, [groupId]);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!newMessage.trim()) return;
 
     const messageData = { groupId, text: newMessage, senderId: userId };
 
-    // Emit message via Socket.io for real-time updates
-    socket.emit('sendMessage', messageData);
+    try {
+      // ✅ Emit message in Socket
+      socket.emit('sendMessage', messageData);
 
-    // Send message to backend
-    axios.post(`http://localhost:3001/api/messages/${groupId}/messages`, messageData, { withCredentials: true })
-      .then((response) => {
-        setMessages(prevMessages => [...prevMessages, response.data]);
-        setNewMessage('');
-      })
-      .catch((error) => console.error('Error sending message:', error));
+      // ✅ Save message to backend and get the saved message with sender populated
+      const response = await axios.post(
+        `http://localhost:3001/api/messages/${groupId}/messages`,
+        messageData,
+        { withCredentials: true }
+      );
+
+      console.log("📤 Message sent and saved:", response.data);
+
+      // ✅ Add message to state with correct sender
+      setMessages((prevMessages) => [...prevMessages, response.data]);
+      setNewMessage('');
+    } catch (error) {
+      console.error('❌ Error sending message:', error);
+    }
   };
 
   return (
@@ -76,7 +91,7 @@ const Chat = ({ groupId, groupName, groupDescription, onClose, userId }) => {
       <div className="chat-messages">
         {messages.length === 0 ? <p>No messages yet...</p> : (
           messages.map((msg) => (
-            <Message key={msg._id} sender={msg.sender.username} text={msg.text} time={msg.time} />
+            <Message key={msg._id} sender={msg.sender?.username || "Unknown"} text={msg.text} time={msg.time} />
           ))
         )}
       </div>

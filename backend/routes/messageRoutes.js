@@ -7,7 +7,6 @@ const router = express.Router();
 router.use(verifyToken);
 
 router.get('/:groupId/messages', getMessages);
-
-router.post('/send', sendMessage);
+router.post('/:groupId/messages', sendMessage);
 
 module.exports = router;

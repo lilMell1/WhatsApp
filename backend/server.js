@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const adminRoutes = require('./routes/adminRoutes');
+const Message = require('./models/Message');
 
 dotenv.config();
 
@@ -28,21 +29,46 @@ app.use(cors({
 }));
 
 connectDB();
-
 app.set('socketio', io);
-
 app.use('/api', adminRoutes);
 
 io.on('connection', (socket) => {
-  console.log('user connected:', socket.id);
+  console.log('🟢 User connected:', socket.id);
 
   socket.on('joinGroup', (groupId) => {
     socket.join(groupId);
-    console.log(`user joined group: ${groupId}`);
+    console.log(`👥 User joined group: ${groupId}`);
+  });
+
+  socket.on('sendMessage', async (messageData) => {
+    console.log("📤 Receiving message:", messageData);
+
+    const { groupId, text, senderId } = messageData;
+    if (!groupId || !text || !senderId) {
+      console.error("🚨 Missing required message fields.");
+      return;
+    }
+
+    try {
+      const newMessage = new Message({
+        groupId,
+        text,
+        sender: senderId,
+        time: new Date(),
+      });
+
+      await newMessage.save();
+      console.log("✅ Message saved to DB:", newMessage);
+
+      io.to(groupId).emit('receiveMessage', newMessage);
+      console.log("📡 Message broadcasted to group:", groupId);
+    } catch (error) {
+      console.error("❌ Error saving message:", error);
+    }
   });
 
   socket.on('disconnect', () => {
-    console.log('user disconnected:', socket.id);
+    console.log('🔴 User disconnected:', socket.id);
   });
 });
 

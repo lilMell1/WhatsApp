@@ -54,6 +54,7 @@ exports.leaveGroup = async (req, res) => {
   try {
     const { groupId } = req.body;
     const userId = req.user.id;
+    // console.log(req.user.id,"left the group");
 
     const group = await Group.findById(groupId);
     if (!group) return res.status(404).json({ message: 'Group not found' });
@@ -143,8 +144,8 @@ exports.getGroupInvites = async (req, res) => {
     const userId = req.user.id;
 
     const user = await User.findById(userId)
-      .populate('groupInvites.groupId', 'name') // Populate group name
-      .populate('groupInvites.invitedBy', 'username'); // Populate inviter's username
+      .populate('groupInvites.groupId', 'name') 
+      .populate('groupInvites.invitedBy', 'username'); 
 
     if (!user) return res.status(404).json({ message: "User not found" });
 

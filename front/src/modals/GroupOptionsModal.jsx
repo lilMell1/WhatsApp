@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/groupOptionsModal.css';
 
-const GroupOptionsModal = ({ groupId, groupName, onClose, userId, onGroupUpdate }) => {
+const GroupOptionsModal = ({ groupId, groupName, onClose, userId, fetchGroups }) => {
   const [members, setMembers] = useState([]);
   const [friends, setFriends] = useState([]);
   const [selectedFriend, setSelectedFriend] = useState('');
@@ -36,28 +36,27 @@ const GroupOptionsModal = ({ groupId, groupName, onClose, userId, onGroupUpdate 
 
   const handleLeaveGroup = () => {
     if (!window.confirm('Are you sure you want to leave this group?')) return;
-  
+
     axios.post(`http://localhost:3001/api/groups/leave`, { groupId }, { withCredentials: true })
       .then(() => {
         alert('You left the group');
-        onGroupUpdate();  
+        fetchGroups();  // ✅ Call onGroupUpdate to refresh groups
         onClose(); 
       })
       .catch((error) => console.error('Error leaving group:', error));
   };
-  
+
   const handleKickMember = (memberId) => {
     if (!window.confirm('Are you sure you want to kick this user?')) return;
-  
+
     axios.post(`http://localhost:3001/api/groups/kick`, { groupId, userId: memberId }, { withCredentials: true })
       .then(() => {
         alert('User kicked successfully!');
         setMembers(members.filter(member => member._id !== memberId)); // ✅ Remove from UI
-        onGroupUpdate();  
+        fetchGroups();  
       })
       .catch((error) => console.error('Error kicking member:', error));
   };
-  
 
   return (
     <div className="groupOptions-modal-overlay" onClick={onClose}>
@@ -82,7 +81,6 @@ const GroupOptionsModal = ({ groupId, groupName, onClose, userId, onGroupUpdate 
           </button>
         </div>
 
-        {/* ✅ Scrollable Members List */}
         <div className="groupOptions-modal-body">
           <h3>Group Members</h3>
           <ul className="groupOptions-group-members-list">

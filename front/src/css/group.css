@@ -2,83 +2,86 @@
   background-color: gray;
   cursor: pointer;
   width: 95%;
-  height: fit-content;
+  height: 80px; 
   margin-top: 5px;
   border: none;
-  position: relative; /* Needed for pseudo-elements */
+  position: relative; 
   padding: 10px;
   border-radius: 10px;
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+  transition: background-color 0.3s ease-in-out;
 }
 
-/* ✅ Top Border with Fade */
-.group-item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px; /* Thickness of the border */
-  background: linear-gradient(to right, transparent, white 50%, transparent);
-}
-
-/* ✅ Bottom Border with Fade */
+/*  Top and bottom fading borders */
+.group-item::before,
 .group-item::after {
   content: "";
   position: absolute;
-  bottom: 0;
   left: 0;
   width: 100%;
-  height: 3px; /* Thickness of the border */
+  height: 3px; 
   background: linear-gradient(to right, transparent, white 50%, transparent);
 }
 
-/* ✅ Hover Effect */
+.group-item::before {
+  top: 0;
+}
+
+.group-item::after {
+  bottom: 0;
+}
+
 .group-item:hover {
   background-color: lightcyan;
 }
 
-/* ✅ Group Info Styling */
 .group-info {
   display: flex;
-  word-break: break-word;
   width: 100%;
   justify-content: space-between;
-}
-
-@media (max-width: 1200px) {
-  .group-info {
-    flex-direction: column;
-    align-items: flex-start; 
-  }
-
-  .group-name {
-    max-width: 100%;
-  }
-
-  .group-date {
-    text-align: left; 
-  }
+  align-items: center;
+  word-break: break-word;
 }
 
 .group-name {
   color: black;
   font-size: 18px;
   font-weight: bold;
-  max-width: 80%;
+  max-width: 60%;
   margin: 0;
   overflow-wrap: break-word;
   word-wrap: break-word;
   text-align: left;
 }
 
-.group-description {
-  color: black;
-  font-size: 14px;
-}
-
 .group-date {
   color: black;
   font-size: medium;
-  width: auto;
   text-align: right;
+  min-width: 20%;
+}
+
+.group-description {
+  color: black;
+  font-size: 14px;
+  margin-top: 3px;
+}
+
+@media (max-width: 1200px) {
+  .group-info {
+    flex-direction: row; 
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .group-name {
+    max-width: 70%;
+  }
+
+  .group-date {
+    text-align: right;
+    min-width: 25%;
+  }
 }

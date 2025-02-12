@@ -1,3 +1,4 @@
+/* ✅ Chat Container */
 .chat-container {
   display: flex;
   flex-direction: column;
@@ -8,6 +9,7 @@
   overflow: hidden;
 }
 
+/* ✅ Chat Header */
 .chat-header {
   display: flex;
   justify-content: space-between;
@@ -80,6 +82,78 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-height: 70vh;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #e5ddd5;
+}
+
+/* ✅ Auto-scroll to bottom */
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: #e5ddd5;
+}
+
+/* ✅ Scroll animation */
+@keyframes scroll-to-bottom {
+  from {
+    scroll-behavior: auto;
+  }
+  to {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ✅ Message Bubble */
+.chat-message {
+  max-width: 60%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  word-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Sent Messages (Right-aligned, Green) */
+.chat-message.sent {
+  align-self: flex-end;
+  background-color: #dcf8c6;
+  text-align: right;
+  border-bottom-right-radius: 0;
+}
+
+/* ✅ Received Messages (Left-aligned, White) */
+.chat-message.received {
+  align-self: flex-start;
+  background-color: #ffffff;
+  text-align: left;
+  border-bottom-left-radius: 0;
+}
+
+/* ✅ Sender Name */
+.sender-name {
+  font-weight: bold;
+  font-size: 12px;
+  color: #075e54;
+  margin-bottom: 3px;
+}
+
+/* ✅ Message Time */
+.message-time {
+  font-size: 10px;
+  color: gray;
+  text-align: right;
+  margin-top: 5px;
 }
 
 /* ✅ Message Input Section */

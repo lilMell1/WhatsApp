@@ -32,16 +32,14 @@ connectDB();
 app.set('socketio', io);
 app.use('/api', adminRoutes);
 
-io.on('connection', (socket) => {
-  console.log('🟢 User connected:', socket.id);
+io.on("connection", (socket) => {
 
-  socket.on('joinGroup', (groupId) => {
+  socket.on("joinGroup", (groupId) => {
+    // console.log(`👥 User ${socket.id} joined group ${groupId}`);
     socket.join(groupId);
-    console.log(`👥 User joined group: ${groupId}`);
   });
 
-  socket.on('sendMessage', async (messageData) => {
-    console.log("📤 Receiving message:", messageData);
+  socket.on("sendMessage", async (messageData) => {
 
     const { groupId, text, senderId } = messageData;
     if (!groupId || !text || !senderId) {
@@ -50,7 +48,7 @@ io.on('connection', (socket) => {
     }
 
     try {
-      const newMessage = new Message({
+      let newMessage = new Message({
         groupId,
         text,
         sender: senderId,
@@ -58,19 +56,26 @@ io.on('connection', (socket) => {
       });
 
       await newMessage.save();
-      console.log("✅ Message saved to DB:", newMessage);
+      newMessage = await newMessage.populate("sender", "username");
 
-      io.to(groupId).emit('receiveMessage', newMessage);
-      console.log("📡 Message broadcasted to group:", groupId);
+      io.to(groupId).emit("receiveMessage", newMessage);
+
+      io.to(groupId).emit("newMessageNotification", {
+        groupId,
+        text,
+        sender: newMessage.sender.username,
+      });
+
     } catch (error) {
       console.error("❌ Error saving message:", error);
     }
   });
 
-  socket.on('disconnect', () => {
-    console.log('🔴 User disconnected:', socket.id);
+  socket.on("disconnect", () => {
+    console.log(`❌ User disconnected: ${socket.id}`);
   });
 });
+
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

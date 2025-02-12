@@ -1,8 +1,7 @@
 .groups-container {
-  /* border: 2px solid green; */
   display: flex;
   flex-direction: column;
-  background-color: darkgray;
+  background-color: #ece5dd; /* ✅ WhatsApp background */
   height: 100%;
   min-width: 40%;
   border-top-left-radius: 5px;
@@ -10,149 +9,125 @@
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-.float-left{
+
+.groups-container-header {
+  display: flex;
+  border-bottom: 2px solid #075e54; 
+  margin-bottom: 2px;
+  height: 90px;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  background-color: #128c7e;
+  color: white;
+}
+
+strong {
+  font-size: 30px;
+  margin-left: 10px;
+}
+
+.float-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-right: 10px;
+  justify-content: center;
+}
+
+.btn-add-group,
+.btn-logOut {
+  background-color: #25d366; 
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  padding: 10px;
+}
+
+.btn-add-group:hover,
+.btn-logOut:hover {
+  background-color: #1ebd58;
+  transform: scale(1.05);
+}
+
+
+.btn-bell {
+  width: 50px;
+  height: 50px;
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-right: 10px;
+  justify-content: center;
+  background-color: #075e54; 
+  border-radius: 50%;
+  cursor: pointer;
+  transition-duration: .3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.13);
+  border: none;
 }
 
-.btn-add-group{
-    height: 40px;
-    width: 80px;
-  
+.bell {
+  width: 18px;
 }
 
-.groups-container-header{
-    display: flex;
-    border-bottom: 2px solid black;
-    margin-bottom: 2px;
-    height: 90px;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-}
-strong{
-    font-size: 30px;
-    margin-left: 10px;
+.bell path {
+  fill: white;
 }
 
-.btn-add-group {
-    background-color: gray; /* Green */
-    color: white;
-    height: fit-content;   
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-  }
+.btn-bell:hover {
+  background-color: #128c7e;
+}
 
+.btn-bell:hover .bell {
+  animation: bellRing 0.9s both;
+}
 
+.btn-add-friend {
+  background: url('../../public/add-friend-24.png');
+  background-size: cover;
+  color: white;
+  width: 50px;  
+  height: 50px; 
+  border: none;
+  border-radius: 30px;
+  border: 2px solid black;
+  cursor: pointer;
+  text-indent: -1000px;
+  overflow: hidden;
+}
 
-  /* From Uiverse.io by vinodjangid07 */ 
-.btn-bell {
-    width: 50px;
-    height: 50px;
-    position: relative;
-    display: flex;
-    align-items: center;
+.groups-div {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+@keyframes bellRing {
+  0%, 100% { transform-origin: top; }
+  15% { transform: rotateZ(10deg); }
+  30% { transform: rotateZ(-10deg); }
+  45% { transform: rotateZ(5deg); }
+  60% { transform: rotateZ(-5deg); }
+  75% { transform: rotateZ(2deg); }
+}
+
+@media (max-width:1100px) {
+  .float-right {
+    flex-wrap: wrap; 
     justify-content: center;
-    background-color: rgb(44, 44, 44);
-    border-radius: 50%;
-    cursor: pointer;
-    transition-duration: .3s;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.13);
-    border: none;
   }
-  
-  .bell {
-    width: 18px;
+
+  .groups-container-header {
+    height: 150px;
+    padding: 10px;
+    text-align: center;
   }
-  
-  .bell path {
-    fill: white;
-  }
-  
-  .btn-bell:hover {
-    background-color: #4CAF50;
-  }
-  
-  .btn-bell:hover .bell {
-    animation: bellRing 0.9s both;
-  }
-  
-  .btn-add-friend {
-    background: url('../../public/add-friend-24.png');
-    background-size: cover;
-    color: white;
-    width: 50px;  
-    height: 50px; 
-    border: none;
-    border-radius: 30px;
-    border: 2px solid black;
-    cursor: pointer;
-    text-indent: -1000px;
-    overflow: hidden;
 }
-
-  .groups-div{
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    align-items: center;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-
-  @keyframes bellRing {
-    0%,
-    100% {
-      transform-origin: top;
-    }
-  
-    15% {
-      transform: rotateZ(10deg);
-    }
-  
-    30% {
-      transform: rotateZ(-10deg);
-    }
-  
-    45% {
-      transform: rotateZ(5deg);
-    }
-  
-    60% {
-      transform: rotateZ(-5deg);
-    }
-  
-    75% {
-      transform: rotateZ(2deg);
-    }
-  }
-  
-  
-  .btn-add-group:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
-  }
-
-  @media(max-width:800px) {
-    .float-left{
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .groups-container-header{
-      height: auto;
-      padding-top: 5px;
-      padding-bottom: 5px;
-    }
-    .float-left{
-      margin-left: 15px;
-    }
-  }

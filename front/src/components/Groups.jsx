@@ -4,6 +4,7 @@ import Group from './Group';
 import NewGroupModal from '../modals/NewGroupModal';
 import AddFriendModal from '../modals/AddFriendModal';
 import BellModal from '../modals/BellModal';
+import socket from '../socket'
 import '../css/groups.css';
 import '../css/group.css';
 
@@ -19,10 +20,20 @@ const Groups = ({ userId, onSelectGroup, groups, fetchGroups }) => {
       })
       .catch(error => console.error("❌ Error logging out:", error));
   };
-
+  
+  useEffect(() => {
+    socket.on("userKicked", ({ groupId, userId: kickedUserId }) => {
+    
+      if (kickedUserId === userId) {
+        fetchGroups(); // refresh the groups list immediately
+      }
+    });    
+    fetchGroups();
+  }, [userId,isBellModalOpen]);
+  
   useEffect(() => {
     fetchGroups();
-  }, [userId]);
+  }, [userId,isBellModalOpen]);
 
   const createGroup = (newGroup) => {
     if (!userId) {

@@ -43,7 +43,12 @@ function App() {
 
   return (
     <div className='app-container'>
-        <Groups userId={userId} onSelectGroup={setSelectedGroup} groups={groups} fetchGroups={fetchGroups} /> 
+        <Groups 
+            userId={userId} 
+            onSelectGroup={setSelectedGroup}
+            groups={groups}
+            fetchGroups={fetchGroups}
+               /> 
         {selectedGroup ? (
           <Chat 
             userId={userId} 
@@ -55,6 +60,7 @@ function App() {
               fetchGroups(); 
             }}
             fetchGroups={fetchGroups}
+            setSelectedGroup={setSelectedGroup}
           />
         ) : (
           <div className="chat-container">

@@ -7,6 +7,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const adminRoutes = require('./routes/adminRoutes');
 const Message = require('./models/Message');
+const Group = require('./models/Group');
+const User = require('./models/User'); 
 
 dotenv.config();
 
@@ -33,6 +35,29 @@ app.set('socketio', io);
 app.use('/api', adminRoutes);
 
 io.on("connection", (socket) => {
+
+  socket.on("kickMember", async ({ groupId, userId }) => {
+    console.log(`❌ Kicking user ${userId} from group ${groupId}`);
+
+    try {
+      // remove the user from the group's members array
+      await Group.findByIdAndUpdate(groupId, { $pull: { members: userId } });
+
+      // remove the group from the user's groups array
+      await User.findByIdAndUpdate(userId, { $pull: { groups: groupId } });
+
+      console.log(`✅ Successfully removed user ${userId} from group ${groupId}`);
+
+      // notify the kicked user only
+      io.to(groupId).emit("userKicked", { groupId, userId });
+
+      console.log(`📡 Emitting 'userKicked' event to user ${userId}`);
+
+    } catch (error) {
+      console.error("❌ Error kicking user from group:", error);
+    }
+  });
+
 
   socket.on("joinGroup", (groupId) => {
     // console.log(`👥 User ${socket.id} joined group ${groupId}`);

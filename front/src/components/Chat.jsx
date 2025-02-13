@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { io } from 'socket.io-client';
 import axios from 'axios';
 import Message from './Message';
+import socket from '../socket'
 import GroupOptionsModal from '../modals/GroupOptionsModal';
 import '../css/chat.css';
 
-const socket = io('http://localhost:3001', { withCredentials: true });
 
-const Chat = ({ groupId, groupName, groupDescription, onClose, userId, fetchGroups }) => {
+const Chat = ({ groupId, groupName, groupDescription, onClose, userId, fetchGroups,setSelectedGroup }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
@@ -26,7 +25,18 @@ const Chat = ({ groupId, groupName, groupDescription, onClose, userId, fetchGrou
         setTimeout(scrollToBottom, 1);
       })
       .catch(error => console.error('Error fetching messages:', error));
-  
+      
+      socket.off("userKicked");
+      socket.on("userKicked", ({ groupId: kickedGroupId, userId: kickedUserId }) => {
+      
+        if (kickedUserId === userId && kickedGroupId === groupId) {
+          alert("❌ You have been removed from the group!");
+          setSelectedGroup(null);
+          fetchGroups();
+        }
+      });
+
+      
     socket.emit('joinGroup', groupId);
   
     socket.off('receiveMessage');  
@@ -36,6 +46,7 @@ const Chat = ({ groupId, groupName, groupDescription, onClose, userId, fetchGrou
     });
   
     return () => {
+      socket.off("userKicked");
       socket.off('receiveMessage');
       socket.emit('leaveGroup', groupId);
     };
@@ -115,6 +126,7 @@ const Chat = ({ groupId, groupName, groupDescription, onClose, userId, fetchGrou
           onClose={() => setIsOptionsOpen(false)}
           userId={userId}
           fetchGroups={fetchGroups}
+          setSelectedGroup={setSelectedGroup}
         />
       )}
     </div>

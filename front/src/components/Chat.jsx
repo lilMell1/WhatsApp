@@ -30,7 +30,7 @@ const Chat = ({ groupId, groupName, groupDescription, onClose, userId, fetchGrou
       socket.on("userKicked", ({ groupId: kickedGroupId, userId: kickedUserId }) => {
       
         if (kickedUserId === userId && kickedGroupId === groupId) {
-          alert("❌ You have been removed from the group!");
+          alert(" you have been removed from the group");
           setSelectedGroup(null);
           fetchGroups();
         }
@@ -72,7 +72,7 @@ const Chat = ({ groupId, groupName, groupDescription, onClose, userId, fetchGrou
       setNewMessage('');
       setTimeout(scrollToBottom, 1);
     } catch (error) {
-      console.error("❌ Error sending message:", error);
+      console.error(" error sending message:", error);
     }
   };
   

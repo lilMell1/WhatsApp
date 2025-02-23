@@ -10,7 +10,8 @@ const UserSchema = new mongoose.Schema({
   groupInvites: [{
     groupId: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' }, 
     invitedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' } 
-  }]
+  }],
+  isActive: { type: Boolean, default: true }
 });
 
 module.exports = mongoose.model('User', UserSchema);

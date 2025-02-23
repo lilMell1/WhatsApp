@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.use(verifyToken);
 
-router.get('/friends', getFriends);
+router.get('/fetch-friends', getFriends);
 router.get('/requests', getFriendRequests);
 router.post('/remove-friend', removeFriend);
 router.post('/send-request', sendFriendRequest);

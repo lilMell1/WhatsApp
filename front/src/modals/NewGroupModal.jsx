@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../css/newGroupModal.css'
 
+
 const NewGroupModal = ({ isOpen, onClose, onCreate }) => {
   const [groupName, setGroupName] = useState('');
   const [groupDescription, setGroupDescription] = useState('');

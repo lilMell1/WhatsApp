@@ -1,12 +1,12 @@
-const express = require('express');
-const { getUserInfo } = require('../controllers/userController');
-const { verifyToken } = require('../middleware/authMiddleware');
+const express = require("express");
+const { getUserInfo, deleteUser, updateUsername } = require("../controllers/userController");
+const { verifyToken } = require("../middleware/authMiddleware");
 
 const router = express.Router();
-
 router.use(verifyToken);
 
-// ✅ Route to get current user info
-router.get('/me', getUserInfo);
+router.get("/me", getUserInfo); 
+router.put("/update-name", updateUsername); 
+router.delete("/", deleteUser); 
 
 module.exports = router;

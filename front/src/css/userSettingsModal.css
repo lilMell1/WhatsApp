@@ -1,0 +1,135 @@
+.user-settings-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.user-settings-modal-content {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  width: 420px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: fade-in 0.3s ease-in-out;
+}
+
+/* Title */
+.user-settings-modal-content h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Input & Label */
+.user-settings-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.user-settings-section label {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.user-settings-section input {
+  width: 90%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: center;
+}
+
+/* Buttons */
+.user-settings-btn-update {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  font-size: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.user-settings-btn-update:hover {
+  background: #388E3C;
+}
+
+.user-settings-btn-danger {
+  background: red;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  font-size: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.user-settings-btn-danger:hover {
+  background: darkred;
+}
+
+.user-settings-close-btn {
+  background: #888;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  font-size: 15px;
+  border-radius: px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.user-settings-close-btn:hover {
+  background: #666;
+}
+
+/* Horizontal Divider */
+hr {
+  margin: 15px 0;
+  border: none;
+  height: 1px;
+  background: gray;
+}
+
+/* Fade-in Animation */
+@keyframes fade-in {
+  from {
+      opacity: 0;
+      transform: scale(0.9);
+  }
+  to {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 500px) {
+  .user-settings-modal-content {
+      width: 90%;
+  }
+}

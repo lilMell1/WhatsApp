@@ -6,14 +6,14 @@ exports.createGroup = async (req, res) => {
     const { name, description } = req.body;
     const userId = req.user.id;
 
-    if (!name) return res.status(400).json({ message: "Group name is required." });
+    if (!name.trim()) return res.status(400).json({ message: "Group name is required." });
 
     const newGroup = new Group({
       name,
       description,
-      createDate: new Date(),
       createdBy: userId,
       members: [userId],
+      isActive: true
     });
 
     await newGroup.save();
@@ -21,6 +21,7 @@ exports.createGroup = async (req, res) => {
 
     res.status(201).json(newGroup);
   } catch (error) {
+    console.error("Error creating group:", error);
     res.status(500).json({ message: 'Server error', error });
   }
 };
@@ -28,24 +29,33 @@ exports.createGroup = async (req, res) => {
 exports.getUserGroups = async (req, res) => {
   try {
     const userId = req.user.id;
-    const user = await User.findById(userId).populate('groups');
+    const user = await User.findById(userId).populate({
+      path: 'groups',
+      match: { isActive: true } 
+    });
+
     if (!user) return res.status(404).json({ message: "User not found" });
 
     res.json(user.groups);
   } catch (error) {
+    console.error("Error fetching groups:", error);
     res.status(500).json({ message: 'Error fetching groups', error });
   }
 };
 
+
 exports.getGroupMembers = async (req, res) => {
   try {
     const { groupId } = req.params;
-    const group = await Group.findById(groupId).populate('members', 'username phoneNumber');
-    
-    if (!group) return res.status(404).json({ message: "Group not found" });
+    const group = await Group.findById(groupId).populate('members', 'username phoneNumber isActive');
 
-    res.json(group.members);
+    if (!group || !group.isActive) return res.status(404).json({ message: "Group not found or inactive" });
+
+    const activeMembers = group.members.filter(member => member.isActive);
+
+    res.json(activeMembers);
   } catch (error) {
+    console.error("Error fetching group members:", error);
     res.status(500).json({ message: 'Error fetching group members', error });
   }
 };
@@ -54,10 +64,9 @@ exports.leaveGroup = async (req, res) => {
   try {
     const { groupId } = req.body;
     const userId = req.user.id;
-    // console.log(req.user.id,"left the group");
 
     const group = await Group.findById(groupId);
-    if (!group) return res.status(404).json({ message: 'Group not found' });
+    if (!group || !group.isActive) return res.status(404).json({ message: 'Group not found or inactive' });
 
     group.members = group.members.filter(memberId => memberId.toString() !== userId);
     await group.save();
@@ -65,15 +74,18 @@ exports.leaveGroup = async (req, res) => {
     await User.findByIdAndUpdate(userId, { $pull: { groups: groupId } });
 
     if (group.members.length === 0) {
-      await Group.findByIdAndDelete(groupId);
-      return res.json({ message: 'Group deleted because all members left' });
+      group.isActive = false; // change it to inactive
+      await group.save();
+      return res.json({ message: 'Group deactivated because all members left' });
     }
 
     res.json({ message: 'Left group successfully' });
   } catch (error) {
+    console.error("Error leaving group:", error);
     res.status(500).json({ message: 'Error leaving group', error });
   }
 };
+
 
 exports.deleteGroup = async (req, res) => {
   try {
@@ -81,9 +93,12 @@ exports.deleteGroup = async (req, res) => {
     const group = await Group.findById(groupId);
     if (!group) return res.status(404).json({ message: 'Group not found' });
 
-    await Group.findByIdAndDelete(groupId);
-    res.json({ message: 'Group deleted successfully' });
+    group.isActive = false; 
+    await group.save();
+
+    res.json({ message: 'Group deactivated successfully' });
   } catch (error) {
+    console.error("Error deleting group:", error);
     res.status(500).json({ message: 'Error deleting group', error });
   }
 };
@@ -93,48 +108,27 @@ exports.inviteFriend = async (req, res) => {
     const { friendId, groupId } = req.body;
     const userId = req.user.id;
 
-    console.log("📌 Incoming Invite Request:");
-    console.log("Friend ID:", friendId);
-    console.log("Group ID:", groupId);
-    console.log("Invited By (User ID):", userId);
-
     if (!friendId || !groupId) {
       return res.status(400).json({ message: "friendId and groupId are required." });
     }
 
     const group = await Group.findById(groupId);
-    if (!group) {
-      return res.status(404).json({ message: "Group not found" });
-    }
-
-    if (group.members.includes(friendId)) {
-      console.error("🚨 User is already in the group:", friendId);
-      return res.status(400).json({ message: "User is already in the group" });
-    }
+    if (!group || !group.isActive) return res.status(404).json({ message: "Group not found or inactive" });
 
     const friend = await User.findById(friendId);
-    if (!friend) {
-      console.error("🚨 Friend not found:", friendId);
-      return res.status(404).json({ message: "Friend not found" });
-    }
+    if (!friend || !friend.isActive) return res.status(404).json({ message: "Friend not found or inactive" });
 
-    // Ensure that `groupInvites` exists
-    if (!friend.groupInvites) {
-      friend.groupInvites = [];
-    }
+    if (group.members.includes(friendId)) return res.status(400).json({ message: "User is already in the group" });
 
-    // Prevent duplicate invites
     const existingInvite = friend.groupInvites.find(invite => invite.groupId.toString() === groupId);
-    if (existingInvite) {
-      return res.status(400).json({ message: "Invite already sent." });
-    }
+    if (existingInvite) return res.status(400).json({ message: "Invite already sent." });
 
     friend.groupInvites.push({ groupId, invitedBy: userId });
     await friend.save();
 
     res.json({ message: "Invitation sent successfully" });
   } catch (error) {
-    console.error("❌ Error sending group invite:", error);
+    console.error("Error sending group invite:", error);
     res.status(500).json({ message: 'Error sending group invite', error });
   }
 };
@@ -149,7 +143,7 @@ exports.getGroupInvites = async (req, res) => {
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    console.log("📨 Group Invites Found:", user.groupInvites);
+    // console.log("📨 Group Invites Found:", user.groupInvites);
 
     res.json(user.groupInvites);
   } catch (error) {
@@ -165,19 +159,23 @@ exports.kickMember = async (req, res) => {
     const { groupId, userId } = req.body;
 
     const group = await Group.findById(groupId);
-    if (!group) return res.status(404).json({ message: "Group not found" });
+    if (!group || !group.isActive) return res.status(404).json({ message: "Group not found or inactive" });
 
-    if (!group.members.includes(userId)) {
-      return res.status(400).json({ message: "User is not in this group" });
-    }
+    if (!group.members.includes(userId)) return res.status(400).json({ message: "User is not in this group" });
 
     group.members = group.members.filter(member => member.toString() !== userId);
     await group.save();
 
     await User.findByIdAndUpdate(userId, { $pull: { groups: groupId } });
 
+    if (group.members.length === 0) {
+      group.isActive = false;
+      await group.save();
+    }
+
     res.json({ message: "User removed from group" });
   } catch (error) {
+    console.error("Error kicking user:", error);
     res.status(500).json({ message: 'Error kicking user', error });
   }
 };
@@ -188,22 +186,25 @@ exports.acceptGroupInvite = async (req, res) => {
     const { groupId } = req.body;
 
     const group = await Group.findById(groupId);
-    if (!group) return res.status(404).json({ message: "Group not found" });
+    if (!group || !group.isActive) return res.status(404).json({ message: "Group not found or inactive" });
 
-    if (group.members.includes(userId)) {
-      return res.status(400).json({ message: "User is already in the group" });
-    }
+    if (group.members.includes(userId)) return res.status(400).json({ message: "User is already in the group" });
 
     group.members.push(userId);
     await group.save();
 
-    await User.findByIdAndUpdate(userId, { $push: { groups: groupId }, $pull: { groupInvites: { groupId } } });
+    await User.findByIdAndUpdate(userId, { 
+      $push: { groups: groupId }, 
+      $pull: { groupInvites: { groupId } } 
+    });
 
     res.json({ message: "Group invitation accepted" });
   } catch (error) {
+    console.error("Error accepting group invite:", error);
     res.status(500).json({ message: 'Error accepting group invite', error });
   }
 };
+
 
 exports.declineGroupInvite = async (req, res) => {
   try {
@@ -214,6 +215,7 @@ exports.declineGroupInvite = async (req, res) => {
 
     res.json({ message: "Group invitation declined" });
   } catch (error) {
+    console.error("Error declining group invite:", error);
     res.status(500).json({ message: 'Error declining group invite', error });
   }
 };

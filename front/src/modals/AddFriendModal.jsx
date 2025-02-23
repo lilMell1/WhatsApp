@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Friend from '../components/Friend';
 import '../css/addFriendModal.css';
+const SERVER_BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
 
 const AddFriendModal = ({ isOpen, onClose, userId }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [friends, setFriends] = useState([]);
 
-  // Fetch user's friends
   useEffect(() => {
     if (!userId || !isOpen) return;
   
-    axios.get(`http://localhost:3001/api/users/friends`, { withCredentials: true }) // ✅ Change to POST
+    axios.get(`${SERVER_BASE_URL}/friends/fetch-friends`, { withCredentials: true }) 
       .then((response) => setFriends(response.data))
       .catch((error) => console.error('Error fetching friends:', error));
   }, [userId, isOpen]);
@@ -23,7 +23,7 @@ const AddFriendModal = ({ isOpen, onClose, userId }) => {
       return;
     }
   
-    axios.post(`http://localhost:3001/api/users/send-request`, { userId, phoneNumber }, { withCredentials: true }) // ✅ Match backend
+    axios.post(`${SERVER_BASE_URL}/friends/send-request`, { userId, phoneNumber }, { withCredentials: true }) 
       .then((response) => {
         alert(response.data.message);
         setPhoneNumber('');
@@ -33,11 +33,10 @@ const AddFriendModal = ({ isOpen, onClose, userId }) => {
       });
   };
   
-  // Remove friend
   const handleRemoveFriend = (friendId) => {
     if (!window.confirm('Are you sure you want to remove this friend?')) return;
 
-    axios.post(`http://localhost:3001/api/users/remove-friend`, { userId, friendId }, { withCredentials: true })
+    axios.post(`${API_BASE_URL}/friends/remove-friend`, { userId, friendId }, { withCredentials: true })
       .then(() => {
         setFriends(friends.filter(friend => friend._id !== friendId)); // Remove from UI
       })

@@ -1,5 +1,5 @@
-/* ✅ Chat Container */
 .chat-container {
+  /* border: 2px solid black; */
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -9,8 +9,8 @@
   overflow: hidden;
 }
 
-/* ✅ Chat Header */
 .chat-header {
+  /* border: 2px solid red; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -35,14 +35,12 @@
   opacity: 0.8;
 }
 
-/* ✅ Chat Header Options */
 .chat-header-options {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-/* ✅ Stylish Option Button */
 .btn-option {
   background: transparent;
   color: white;
@@ -57,7 +55,6 @@
   color: #c7ecee;
 }
 
-/* ✅ Stylish Close Button */
 .chat-close-btn {
   background: transparent;
   color: white;
@@ -73,8 +70,8 @@
   background: rgba(255, 0, 0, 0.7);
 }
 
-/* ✅ Chat Messages Area */
 .chat-messages {
+  /* border: 2px solid purple; */
   flex-grow: 1;
   padding: 15px;
   background: #e5ddd5;
@@ -82,12 +79,11 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  max-height: 70vh;
+  height: 100%;
   scrollbar-width: thin;
   scrollbar-color: #888 #e5ddd5;
 }
 
-/* ✅ Auto-scroll to bottom */
 .chat-messages::-webkit-scrollbar {
   width: 8px;
 }
@@ -111,7 +107,6 @@
   }
 }
 
-/* ✅ Message Bubble */
 .chat-message {
   max-width: 60%;
   padding: 8px 12px;
@@ -124,7 +119,6 @@
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* ✅ Sent Messages (Right-aligned, Green) */
 .chat-message.sent {
   align-self: flex-end;
   background-color: #dcf8c6;
@@ -132,7 +126,6 @@
   border-bottom-right-radius: 0;
 }
 
-/* ✅ Received Messages (Left-aligned, White) */
 .chat-message.received {
   align-self: flex-start;
   background-color: #ffffff;
@@ -140,7 +133,6 @@
   border-bottom-left-radius: 0;
 }
 
-/* ✅ Sender Name */
 .sender-name {
   font-weight: bold;
   font-size: 12px;
@@ -148,7 +140,6 @@
   margin-bottom: 3px;
 }
 
-/* ✅ Message Time */
 .message-time {
   font-size: 10px;
   color: gray;
@@ -156,7 +147,6 @@
   margin-top: 5px;
 }
 
-/* ✅ Message Input Section */
 .chat-input {
   display: flex;
   padding: 10px;
@@ -165,7 +155,6 @@
   align-items: center;
 }
 
-/* ✅ Input Field */
 .chat-input input {
   flex: 1;
   padding: 10px;
@@ -180,7 +169,6 @@
   border-color: #128c7e;
 }
 
-/* ✅ Send Button */
 .chat-input button {
   background-color: #128c7e;
   color: white;

@@ -37,7 +37,7 @@ app.use('/api', adminRoutes);
 io.on("connection", (socket) => {
 
   socket.on("kickMember", async ({ groupId, userId }) => {
-    console.log(`❌ Kicking user ${userId} from group ${groupId}`);
+    console.log(` Kicking user ${userId} from group ${groupId}`);
 
     try {
       // remove the user from the group's members array
@@ -46,7 +46,7 @@ io.on("connection", (socket) => {
       // remove the group from the user's groups array
       await User.findByIdAndUpdate(userId, { $pull: { groups: groupId } });
 
-      console.log(`✅ Successfully removed user ${userId} from group ${groupId}`);
+      console.log(` Successfully removed user ${userId} from group ${groupId}`);
 
       // notify the kicked user only
       io.to(groupId).emit("userKicked", { groupId, userId });
@@ -54,13 +54,13 @@ io.on("connection", (socket) => {
       console.log(`📡 Emitting 'userKicked' event to user ${userId}`);
 
     } catch (error) {
-      console.error("❌ Error kicking user from group:", error);
+      console.error(" error kicking user from group:", error);
     }
   });
 
 
   socket.on("joinGroup", (groupId) => {
-    // console.log(`👥 User ${socket.id} joined group ${groupId}`);
+    // console.log(` User ${socket.id} joined group ${groupId}`);
     socket.join(groupId);
   });
 
@@ -68,7 +68,7 @@ io.on("connection", (socket) => {
 
     const { groupId, text, senderId } = messageData;
     if (!groupId || !text || !senderId) {
-      console.error("🚨 Missing required message fields.");
+      console.error(" Missing required message fields.");
       return;
     }
 
@@ -77,7 +77,6 @@ io.on("connection", (socket) => {
         groupId,
         text,
         sender: senderId,
-        time: new Date(),
       });
 
       await newMessage.save();
@@ -92,15 +91,15 @@ io.on("connection", (socket) => {
       });
 
     } catch (error) {
-      console.error("❌ Error saving message:", error);
+      console.error(" error saving message:", error);
     }
   });
 
   socket.on("disconnect", () => {
-    console.log(`❌ User disconnected: ${socket.id}`);
+    console.log(` user disconnected: ${socket.id}`);
   });
 });
 
 
 const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(` Server running on port ${PORT}`));

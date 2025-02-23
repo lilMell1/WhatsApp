@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const GroupSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  description: { type: String }, // ✅ New field
-  createDate: { type: Date, default: Date.now }, // ✅ Automatically set
+  description: { type: String }, 
+  createDate: { type: Date, default: Date.now }, 
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   messages: [
@@ -13,6 +13,7 @@ const GroupSchema = new mongoose.Schema({
       timestamp: { type: Date, default: Date.now },
     },
   ],
+  isActive: { type: Boolean, default: true }
 });
 
 module.exports = mongoose.model('Group', GroupSchema);

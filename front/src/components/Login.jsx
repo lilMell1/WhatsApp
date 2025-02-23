@@ -39,7 +39,7 @@ const Login = () => {
         await registerUser(formData);
       
         setIsRegister(!isRegister);
-        alert('Registration successful! You can now log in.');
+        alert(' registration successful! You can now log in.');
         setIsRegister(false);
       } else {
         const response = await loginUser({ username: formData.username, password: formData.password });

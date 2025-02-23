@@ -4,6 +4,9 @@ import socket from '../socket'
 
 import '../css/groupOptionsModal.css';
 
+const SERVER_BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
+
+
 const GroupOptionsModal = ({ groupId, groupName, onClose, userId, fetchGroups,setSelectedGroup }) => {
   const [members, setMembers] = useState([]);
   const [friends, setFriends] = useState([]);
@@ -11,14 +14,14 @@ const GroupOptionsModal = ({ groupId, groupName, onClose, userId, fetchGroups,se
 
   useEffect(() => {
     if (!groupId) return;
-    axios.get(`http://localhost:3001/api/groups/${groupId}/members`, { withCredentials: true })
+    axios.get(`${SERVER_BASE_URL}/groups/${groupId}/members`, { withCredentials: true })
       .then((response) => setMembers(response.data))
       .catch((error) => console.error('Error fetching members:', error));
   }, [groupId]);
 
   useEffect(() => {
     if (!userId) return;
-    axios.get(`http://localhost:3001/api/users/friends`, { withCredentials: true })
+    axios.get(`${SERVER_BASE_URL}/friends/fetch-friends`, { withCredentials: true })
       .then((response) => setFriends(response.data))
       .catch((error) => console.error('Error fetching friends:', error));
   }, [userId]);
@@ -28,7 +31,7 @@ const GroupOptionsModal = ({ groupId, groupName, onClose, userId, fetchGroups,se
       alert('Select a friend to invite.');
       return;
     }
-    axios.post(`http://localhost:3001/api/groups/invite`, { groupId, friendId: selectedFriend }, { withCredentials: true })
+    axios.post(`${SERVER_BASE_URL}/groups/invite`, { groupId, friendId: selectedFriend }, { withCredentials: true })
       .then(() => {
         alert('Invitation sent!');
         setSelectedFriend('');
@@ -39,7 +42,7 @@ const GroupOptionsModal = ({ groupId, groupName, onClose, userId, fetchGroups,se
   const handleLeaveGroup = () => {
     if (!window.confirm('Are you sure you want to leave this group?')) return;
 
-    axios.post(`http://localhost:3001/api/groups/leave`, { groupId }, { withCredentials: true })
+    axios.post(`${SERVER_BASE_URL}/groups/leave`, { groupId }, { withCredentials: true })
       .then(() => {
         alert('You left the group');
         fetchGroups();  
@@ -58,10 +61,10 @@ const GroupOptionsModal = ({ groupId, groupName, onClose, userId, fetchGroups,se
     
     socket.emit("kickMember", { groupId, userId: memberId }, (response) => {
       if (response.success) {
-        console.log("✅ Kick confirmed by server");
+        console.log(" Kick confirmed by server");
         fetchGroups(); 
       } else {
-        console.error("❌ Error kicking user:", response.error);
+        console.error(" error kicking user:", response.error);
       }
     });
   };

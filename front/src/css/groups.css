@@ -6,20 +6,18 @@
   min-width: 40%;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
 }
 
 .groups-container-header {
   display: flex;
+  flex-wrap: wrap;  /* ✅ Prevents items from overflowing */
   border-bottom: 2px solid #075e54; 
-  margin-bottom: 2px;
   height: 90px;
   justify-content: space-between;
-  width: 100%;
   align-items: center;
   background-color: #128c7e;
   color: white;
+  padding: 10px; /* ✅ Ensures spacing */
 }
 
 strong {
@@ -53,7 +51,6 @@ strong {
   background-color: #1ebd58;
   transform: scale(1.05);
 }
-
 
 .btn-bell {
   width: 50px;
@@ -119,15 +116,23 @@ strong {
   75% { transform: rotateZ(2deg); }
 }
 
-@media (max-width:1100px) {
+/* ✅ FIXED HEADER FOR SMALL SCREENS */
+@media (max-width: 1100px) {
+  .groups-container-header {
+    flex-direction: column;  /* ✅ Stack items vertically */
+    height: auto;  /* ✅ Let it adjust dynamically */
+    text-align: center;
+    padding: 15px;
+  }
+
   .float-right {
     flex-wrap: wrap; 
     justify-content: center;
+    margin-top: 10px;
   }
 
-  .groups-container-header {
-    height: 150px;
-    padding: 10px;
-    text-align: center;
+  strong {
+    font-size: 24px; /* ✅ Adjust font size */
+    margin: 5px 0;
   }
 }

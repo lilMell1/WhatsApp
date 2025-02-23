@@ -4,6 +4,7 @@ import Group from './Group';
 import NewGroupModal from '../modals/NewGroupModal';
 import AddFriendModal from '../modals/AddFriendModal';
 import BellModal from '../modals/BellModal';
+import UserSettingsModal from '../modals/UserSettingsModal';
 import socket from '../socket'
 import '../css/groups.css';
 import '../css/group.css';
@@ -12,13 +13,14 @@ const Groups = ({ userId, onSelectGroup, groups, fetchGroups }) => {
   const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
   const [isFriendModalOpen, setIsFriendModalOpen] = useState(false);
   const [isBellModalOpen, setIsBellModalOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
 
   const handleLogout = () => {
     axios.post('http://localhost:3001/api/auth/logout', {}, { withCredentials: true })
       .then(() => {
         window.location.reload(); 
       })
-      .catch(error => console.error("❌ Error logging out:", error));
+      .catch(error => console.error(" error logging out:", error));
   };
   
   useEffect(() => {
@@ -61,6 +63,9 @@ const Groups = ({ userId, onSelectGroup, groups, fetchGroups }) => {
       <div className='groups-container-header'>
         <strong>Chats</strong>
         <div className='float-right'>
+          <button className="btn-settings" onClick={() => setIsSettingsModalOpen(true)}>
+            Settings
+          </button>
           <button className='btn-logOut' onClick={handleLogout}>Log Out</button>
           <button className='btn-add-group' onClick={() => setIsGroupModalOpen(true)}>New Group</button>
           <button className="btn-bell" onClick={() => setIsBellModalOpen(true)}>
@@ -102,6 +107,12 @@ const Groups = ({ userId, onSelectGroup, groups, fetchGroups }) => {
         onClose={() => setIsBellModalOpen(false)}
         userId={userId}
       />
+      <UserSettingsModal 
+        isOpen={isSettingsModalOpen} 
+        onClose={() => setIsSettingsModalOpen(false)} 
+        userId={userId}
+     />
+
     </div>
   );
 };

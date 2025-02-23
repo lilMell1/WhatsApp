@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../css/bellModal.css';
 
+const SERVER_BASE_URL = import.meta.env.VITE_SERVER_BASE_URL;
+
 const BellModal = ({ isOpen, onClose, userId }) => {
   const [friendRequests, setFriendRequests] = useState([]);
   const [groupInvites, setGroupInvites] = useState([]);
@@ -9,41 +11,41 @@ const BellModal = ({ isOpen, onClose, userId }) => {
   useEffect(() => {
     if (!userId || !isOpen) return;
 
-    axios.get(`http://localhost:3001/api/users/requests`, { withCredentials: true })
+    axios.get(`${SERVER_BASE_URL}/friends/requests`, { withCredentials: true })
       .then(response => {
         setFriendRequests(response.data);
-        console.log("🟢 Friend Requests:", response.data);
+        // console.log("friend Requests:", response.data);
       })
       .catch(error => console.error('Error fetching friend requests:', error));
 
-    axios.get(`http://localhost:3001/api/groups/group-invites`, { withCredentials: true })
+    axios.get(`${SERVER_BASE_URL}/groups/group-invites`, { withCredentials: true })
       .then(response => {
         setGroupInvites(response.data);
-        console.log("🟢 Group Invites:", response.data);
+        // console.log("group Invites:", response.data);
       })
-      .catch(error => console.error('Error fetching group invites:', error));
+      .catch(error => console.error(`Error fetching group invites:`, error));
   }, [userId, isOpen]);
 
   const handleAcceptFriend = (friendId) => {
-    axios.post('http://localhost:3001/api/users/accept-request', { friendId }, { withCredentials: true })
+    axios.post(`${SERVER_BASE_URL}/friends/accept-request`, { friendId }, { withCredentials: true })
       .then(() => setFriendRequests(friendRequests.filter(req => req._id !== friendId)))
       .catch(error => console.error('Error accepting friend request:', error));
   };
 
   const handleDenyFriend = (friendId) => {
-    axios.post('http://localhost:3001/api/users/deny-request', { friendId }, { withCredentials: true })
+    axios.post(`${SERVER_BASE_URL}/friends/deny-request`, { friendId }, { withCredentials: true })
       .then(() => setFriendRequests(friendRequests.filter(req => req._id !== friendId)))
       .catch(error => console.error('Error denying friend request:', error));
   };
 
   const handleAcceptGroup = (groupId) => {
-    axios.post('http://localhost:3001/api/groups/accept-invite', { groupId }, { withCredentials: true })
+    axios.post(`${SERVER_BASE_URL}/groups/accept-invite`, { groupId }, { withCredentials: true })
       .then(() => setGroupInvites(groupInvites.filter(invite => invite.groupId._id !== groupId)))
       .catch(error => console.error('Error accepting group invite:', error));
   };
 
   const handleDenyGroup = (groupId) => {
-    axios.post('http://localhost:3001/api/groups/decline-invite', { groupId }, { withCredentials: true })
+    axios.post(`${SERVER_BASE_URL}/groups/decline-invite`, { groupId }, { withCredentials: true })
       .then(() => setGroupInvites(groupInvites.filter(invite => invite.groupId._id !== groupId)))
       .catch(error => console.error('Error denying group invite:', error));
   };

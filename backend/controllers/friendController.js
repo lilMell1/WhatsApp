@@ -1,10 +1,14 @@
 const User = require('../models/User');
 
-
 exports.getFriends = async (req, res) => {
   try {
     const userId = req.user.id; 
-    const user = await User.findById(userId).populate('friends', 'username phoneNumber');
+    const user = await User.findById(userId)
+      .populate({
+        path: 'friends',
+        match: { isActive: true }, // only show active friends
+        select: 'username phoneNumber'
+      });
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -17,7 +21,13 @@ exports.getFriends = async (req, res) => {
 exports.getFriendRequests = async (req, res) => {
   try {
     const userId = req.user.id; 
-    const user = await User.findById(userId).populate('friendRequests', 'username phoneNumber');
+    const user = await User.findById(userId)
+      .populate({
+        path: 'friendRequests',
+        match: { isActive: true }, // only show friend requests from active users
+        select: 'username phoneNumber'
+      });
+
     if (!user) return res.status(404).json({ message: "User not found" });
 
     res.json(user.friendRequests);
@@ -26,16 +36,15 @@ exports.getFriendRequests = async (req, res) => {
   }
 };
 
-
 exports.sendFriendRequest = async (req, res) => {
   try {
     const { phoneNumber } = req.body;
-    const userId = req.user.id; // ✅ Get user ID from token
+    const userId = req.user.id;
 
     const sender = await User.findById(userId);
-    const receiver = await User.findOne({ phoneNumber });
+    const receiver = await User.findOne({ phoneNumber, isActive: true }); // only send requests to active users
 
-    if (!receiver) return res.status(404).json({ message: "User not found" });
+    if (!receiver) return res.status(404).json({ message: "User not found or inactive" });
     if (receiver.friendRequests.includes(userId)) {
       return res.status(400).json({ message: "Request already sent" });
     }
@@ -52,7 +61,7 @@ exports.sendFriendRequest = async (req, res) => {
 exports.removeFriend = async (req, res) => {
   try {
     const { friendId } = req.body;
-    const userId = req.user.id; // ✅ Get user ID from token
+    const userId = req.user.id;
 
     if (!friendId) return res.status(400).json({ message: "Friend ID is required." });
 
@@ -78,12 +87,15 @@ exports.acceptFriendRequest = async (req, res) => {
     const { friendId } = req.body;
     const userId = req.user.id;
 
-    // find both users
     const user = await User.findById(userId);
     const friend = await User.findById(friendId);
 
     if (!user || !friend) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!friend.isActive) {
+      return res.status(400).json({ message: "Cannot accept request from inactive user" });
     }
 
     if (!user.friends.includes(friendId)) {
@@ -94,11 +106,10 @@ exports.acceptFriendRequest = async (req, res) => {
       friend.friends.push(userId);
     }
 
-    // remove the request after accepting
+    // Remove the request after accepting
     user.friendRequests = user.friendRequests.filter(id => id.toString() !== friendId);
     friend.friendRequests = friend.friendRequests.filter(id => id.toString() !== userId);
 
-    // save changes
     await user.save();
     await friend.save();
 
@@ -109,11 +120,10 @@ exports.acceptFriendRequest = async (req, res) => {
   }
 };
 
-
 exports.denyFriendRequest = async (req, res) => {
   try {
     const { friendId } = req.body;
-    const userId = req.user.id; // ✅ Get user ID from token
+    const userId = req.user.id;
 
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: "User not found" });

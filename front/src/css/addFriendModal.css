@@ -8,24 +8,47 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
 }
 
 .addFriend-modal-content {
   background: white;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   width: 400px;
-  height: 500px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; 
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: addFriend-fade-in 0.3s ease-in-out;
+}
+
+.addFriend-close-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  transition: 0.3s;
+}
+
+.addFriend-close-btn:hover {
+  background: darkred;
 }
 
 .addFriend-friend-input-container {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .addFriend-friend-input-container input {
@@ -36,28 +59,92 @@
 }
 
 .addFriend-btn-send-request {
-  background: green;
+  background: #4CAF50;
   color: white;
   border: none;
-  padding: 8px;
-  cursor: pointer;
+  padding: 8px 12px;
   border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.addFriend-btn-send-request:hover {
+  background: #388E3C;
 }
 
 .addFriend-friends-list {
-  flex-grow: 1;  
-  overflow-y: auto; 
-  /* border: 2px solid red; */
-  padding: 5px;
-  margin-bottom: 10px;
+  max-height: 250px;
+  overflow-y: auto;
+  border-top: 1px solid #ddd;
+  margin-top: 15px;
+  padding-top: 10px;
 }
 
-.addFriend-close-btn {
-  background: gray;
+.addFriend-friend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.addFriend-friend-info {
+  text-align: left;
+  flex: 2;
+}
+
+.addFriend-friend-name {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.addFriend-friend-phone {
+  font-size: 14px;
+  color: gray;
+}
+
+.addFriend-friend-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.addFriend-btn-remove {
+  background: #d9534f;
   color: white;
   border: none;
-  padding: 10px;
+  padding: 6px 12px;
+  border-radius: 5px;
   cursor: pointer;
-  width: 100%;
-  margin-top: auto; 
+  transition: 0.3s;
+}
+
+.addFriend-btn-remove:hover {
+  background: #c9302c;
+}
+
+@keyframes addFriend-fade-in {
+  from {
+      opacity: 0;
+      transform: scale(0.9);
+  }
+  to {
+      opacity: 1;
+      transform: scale(1);
+  }
+}
+
+@media (max-width: 500px) {
+  .addFriend-modal-content {
+      width: 90%;
+  }
+
+  .addFriend-friend-item {
+      flex-direction: column;
+      text-align: center;
+  }
+
+  .addFriend-friend-buttons {
+      margin-top: 10px;
+      justify-content: center;
+  }
 }
